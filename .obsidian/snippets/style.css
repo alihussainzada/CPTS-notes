@@ -3,3 +3,12 @@
     max-width: 95% !important;
     margin: 0 auto !important;
 }
+.cm-content,
+.markdown-source-view,
+.markdown-preview-view {
+    user-select: text !important;
+}
+.textLayer,
+.textLayer * {
+    pointer-events: none !important;
+}
