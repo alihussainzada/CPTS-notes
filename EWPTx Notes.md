@@ -68,3 +68,20 @@ User-Agent: Apache-HttpClient/4.1.1 (java 1.5)
 - It was a shopping application. I edit the price, and bypassed the restrictions. Done.
 ### Security Misconfiguration
 - The backend API was vulnerable to directory listing. So, we found a app.py which was disclosing the jwt secret. We forged our own token with role=admin to become admin, and charged ourselfs money. I got the flag. Done.
+
+# # Filter Evasion & WAF Bypass Techniques
+## Encoding
+#### Charset:
+Defines how textual data is mapped to binary values in computing system. E,g: ASCII, Unicode, Latin-1
+##### ASCII
+It’s a **character encoding system** used by computers to represent text (letters, numbers, and symbols) as numbers.
+128 characters, or 2\*\*7 conversions
+##### Unicode
+is a universal character encoding system designed to represent text from **all languages and symbol systems** in a consistent way.
+Unicode itself is a system, but it’s stored using formats like:
+
+- **UTF-8** (most common, used on the web)
+- **UTF-16**
+- **UTF-32**
+
+
